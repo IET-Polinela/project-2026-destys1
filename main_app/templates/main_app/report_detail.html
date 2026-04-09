@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Detail Laporan</title>
+
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #141e30, #243b55);
+            color: white;
+            text-align: center;
+        }
+
+        .container{
+            margin-top: 80px;
+        }
+
+        .card{
+            background: #1f2a40;
+            padding: 25px;
+            border-radius: 10px;
+            display: inline-block;
+            text-align: left;
+            width: 60%;
+        }
+
+        h2{
+            text-align: center;
+        }
+
+        p{
+            margin: 10px 0;
+        }
+
+        .btn{
+            text-decoration: none;
+            color: white;
+            background: #00adb5;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        .btn:hover{
+            background: #008891;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="card">
+
+        <h2>📄 Detail Laporan</h2>
+
+        <p><b>Judul:</b> {{ object.title }}</p>
+        <p><b>Kategori:</b> {{ object.category }}</p>
+        <p><b>Deskripsi:</b> {{ object.description }}</p>
+        <p><b>Lokasi:</b> {{ object.location }}</p>
+        <p><b>Status:</b> {{ object.status }}</p>
+
+        <br>
+
+        <a href="{% url 'report_list' %}" class="btn">⬅ Kembali</a>
+        <a href="{% url 'report_update' object.pk %}" class="btn">✏️ Edit</a>
+
+    </div>
+
+</div>
+
+</body>
+</html>
