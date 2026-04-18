@@ -1,25 +1,32 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.http import HttpResponse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.views import View
-from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
+from django.contrib import messages
+
 from .models import Report
+
 
 def home(request):
     return render(request, 'main_app/home.html')
 
+
 def welcome(request):
     return HttpResponse("Selamat Datang")
+
 
 class ReportListView(ListView):
     model = Report
     template_name = 'main_app/report_list.html'
     context_object_name = 'reports'
 
+
 class ReportDetailView(DetailView):
     model = Report
     template_name = 'main_app/report_detail.html'
+    context_object_name = 'report'
+
 
 class ReportCreateView(CreateView):
     model = Report
@@ -27,21 +34,87 @@ class ReportCreateView(CreateView):
     template_name = 'main_app/add_report.html'
     success_url = reverse_lazy('report_list')
 
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.fields['title'].widget.attrs.update({
+            'class': 'form-control',
+            'placeholder': 'Masukkan judul laporan'
+        })
+        form.fields['category'].widget.attrs.update({
+            'class': 'form-select'
+        })
+        form.fields['description'].widget.attrs.update({
+            'class': 'form-control',
+            'placeholder': 'Masukkan deskripsi laporan',
+            'rows': 4
+        })
+        form.fields['location'].widget.attrs.update({
+            'class': 'form-control',
+            'placeholder': 'Masukkan lokasi kejadian'
+        })
+        return form
+
+    def form_valid(self, form):
+        messages.success(self.request, "Laporan berhasil ditambahkan")
+        return super().form_valid(form)
+
+
 class ReportUpdateView(UpdateView):
     model = Report
     fields = ['title', 'category', 'description', 'location']
     template_name = 'main_app/update_report.html'
     success_url = reverse_lazy('report_list')
 
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.fields['title'].widget.attrs.update({
+            'class': 'form-control',
+            'placeholder': 'Masukkan judul laporan'
+        })
+        form.fields['category'].widget.attrs.update({
+            'class': 'form-select'
+        })
+        form.fields['description'].widget.attrs.update({
+            'class': 'form-control',
+            'placeholder': 'Masukkan deskripsi laporan',
+            'rows': 4
+        })
+        form.fields['location'].widget.attrs.update({
+            'class': 'form-control',
+            'placeholder': 'Masukkan lokasi kejadian'
+        })
+        return form
+
+    def form_valid(self, form):
+        messages.success(self.request, "Laporan berhasil diperbarui")
+        return super().form_valid(form)
+
+
 class ReportDeleteView(DeleteView):
     model = Report
     template_name = 'main_app/delete_report.html'
     success_url = reverse_lazy('report_list')
 
+    def form_valid(self, form):
+        messages.success(self.request, "Laporan berhasil dihapus")
+        return super().form_valid(form)
+
+
 class ReportUpdateStatusView(View):
     def post(self, request, pk):
         report = get_object_or_404(Report, pk=pk)
         new_status = request.POST.get('status')
-        report.status = new_status
+
+        if report.status == 'REPORTED' and new_status == 'VERIFIED':
+            report.status = 'VERIFIED'
+        elif report.status == 'VERIFIED' and new_status == 'IN_PROGRESS':
+            report.status = 'IN_PROGRESS'
+        elif report.status == 'IN_PROGRESS' and new_status == 'RESOLVED':
+            report.status = 'RESOLVED'
+        else:
+            messages.error(request, "Perubahan status tidak valid")
+            return redirect('report_list')
+
         report.save()
+        messages.success(request, "Status berhasil diperbarui")
         return redirect('report_list')

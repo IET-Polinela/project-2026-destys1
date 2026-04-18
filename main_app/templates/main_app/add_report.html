@@ -1,88 +1,70 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Tambah Laporan</title>
+{% extends 'base.html' %}
 
-    <style>
-        body{
-            font-family: Arial, sans-serif;
-            background: linear-gradient(to right, #141e30, #243b55);
-            color: white;
-            text-align: center;
-        }
+{% block title %}Tambah Laporan{% endblock %}
 
-        .container{
-            margin-top: 80px;
-        }
+{% block content %}
 
-        .card{
-            background: #1f2a40;
-            padding: 30px;
-            border-radius: 10px;
-            display: inline-block;
-            text-align: left;
-            width: 50%;
-        }
+<nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb bg-white px-3 py-2 rounded shadow-sm">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'report_list' %}">Reports</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Tambah Laporan</li>
+    </ol>
+</nav>
 
-        h2{
-            text-align: center;
-        }
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-7">
+        <div class="page-card">
+            <h2 class="mb-4 text-center">➕ Tambah Laporan</h2>
 
-        input, textarea, select{
-            width: 100%;
-            padding: 10px;
-            margin-top: 8px;
-            margin-bottom: 15px;
-            border-radius: 5px;
-            border: none;
-        }
+            <form method="post" id="reportForm">
+                {% csrf_token %}
 
-        button{
-            background: #00adb5;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+                <div class="mb-3">
+                    <label for="{{ form.title.id_for_label }}" class="form-label">Title</label>
+                    {{ form.title }}
+                </div>
 
-        button:hover{
-            background: #008891;
-        }
+                <div class="mb-3">
+                    <label for="{{ form.category.id_for_label }}" class="form-label">Category</label>
+                    {{ form.category }}
+                </div>
 
-        a{
-            text-decoration: none;
-            color: white;
-            background: #00adb5;
-            padding: 10px 20px;
-            border-radius: 5px;
-            display: inline-block;
-            margin-top: 15px;
-        }
+                <div class="mb-3">
+                    <label for="{{ form.description.id_for_label }}" class="form-label">Description</label>
+                    {{ form.description }}
+                </div>
 
-        a:hover{
-            background: #008891;
-        }
-    </style>
-</head>
+                <div class="mb-3">
+                    <label for="{{ form.location.id_for_label }}" class="form-label">Location</label>
+                    {{ form.location }}
+                </div>
 
-<body>
-
-<div class="container">
-
-    <div class="card">
-        <h2>➕ Tambah Laporan</h2>
-
-        <form method="POST">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Simpan</button>
-        </form>
-
-        <a href="{% url 'report_list' %}">⬅ Kembali</a>
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary" id="submitBtn">
+                        <span class="default-text">Simpan</span>
+                        <span class="loading-text d-none">
+                            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                            Loading...
+                        </span>
+                    </button>
+                    <a href="{% url 'report_list' %}" class="btn btn-secondary">Kembali</a>
+                </div>
+            </form>
+        </div>
     </div>
-
 </div>
 
-</body>
-</html>
+<script>
+    const reportForm = document.getElementById('reportForm');
+    if (reportForm) {
+        reportForm.addEventListener('submit', function() {
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.querySelector('.default-text').classList.add('d-none');
+            submitBtn.querySelector('.loading-text').classList.remove('d-none');
+        });
+    }
+</script>
+
+{% endblock %}

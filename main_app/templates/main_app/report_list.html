@@ -1,107 +1,80 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Daftar Laporan</title>
+{% extends 'base.html' %}
 
-    <style>
-        body{
-            font-family: Arial, sans-serif;
-            background: linear-gradient(to right, #141e30, #243b55);
-            color: white;
-            padding: 20px;
-        }
+{% block title %}Daftar Laporan{% endblock %}
 
-        h2{
-            text-align: center;
-        }
+{% block content %}
 
-        .container{
-            max-width: 800px;
-            margin: auto;
-        }
+<nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb bg-white px-3 py-2 rounded shadow-sm">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Reports</li>
+    </ol>
+</nav>
 
-        .card{
-            background: #1f2a40;
-            padding: 15px;
-            margin-bottom: 15px;
-            border-radius: 10px;
-        }
-
-        .btn{
-            text-decoration: none;
-            color: white;
-            background: #00adb5;
-            padding: 6px 12px;
-            border-radius: 5px;
-            margin-right: 5px;
-            font-size: 14px;
-        }
-
-        .btn:hover{
-            background: #008891;
-        }
-
-        form{
-            margin-top: 10px;
-        }
-
-        button{
-            background: #00adb5;
-            color: white;
-            border: none;
-            padding: 6px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        button:hover{
-            background: #008891;
-        }
-    </style>
-</head>
-
-<body>
-
-<div class="container">
-
-    <h2>📋 Daftar Laporan</h2>
-
-    <a href="{% url 'report_create' %}" class="btn">➕ Tambah Laporan</a>
-
-    <br><br>
-
-    {% for report in reports %}
-        <div class="card">
-            <b>{{ report.title }}</b> <br>
-            <small>{{ report.category }}</small>
-
-            <p>{{ report.description }}</p>
-            <p><b>Lokasi:</b> {{ report.location }}</p>
-            <p><b>Status:</b> {{ report.status }}</p>
-
-            <!-- ACTION -->
-            <a href="{% url 'report_detail' report.pk %}" class="btn">Detail</a>
-            <a href="{% url 'report_update' report.pk %}" class="btn">Edit</a>
-            <a href="{% url 'report_delete' report.pk %}" class="btn">Hapus</a>
-
-            <!-- WORKFLOW -->
-            <form action="{% url 'update_status' report.pk %}" method="post">
-                {% csrf_token %}
-
-                {% if report.status == 'REPORTED' %}
-                    <button name="status" value="VERIFIED">Verifikasi</button>
-
-                {% elif report.status == 'VERIFIED' %}
-                    <button name="status" value="IN_PROGRESS">Proses</button>
-
-                {% elif report.status == 'IN_PROGRESS' %}
-                    <button name="status" value="RESOLVED">Selesaikan</button>
-                {% endif %}
-            </form>
-        </div>
-    {% endfor %}
-
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="mb-0">📋 Daftar Laporan</h2>
+    <a href="{% url 'report_create' %}" class="btn btn-success">
+        <i class="bi bi-plus-lg"></i> Tambah Laporan
+    </a>
 </div>
 
-</body>
-</html>
+{% if reports %}
+<div class="table-responsive">
+    <table class="table table-bordered table-striped align-middle">
+        <thead class="table-primary">
+            <tr>
+                <th>Judul</th>
+                <th>Lokasi</th>
+                <th>Status</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for report in reports %}
+            <tr>
+                <td>{{ report.title }}</td>
+                <td>{{ report.location }}</td>
+                <td>
+                    {% if report.status == 'REPORTED' %}
+                        <span class="badge bg-secondary">Reported</span>
+                    {% elif report.status == 'VERIFIED' %}
+                        <span class="badge bg-primary">Verified</span>
+                    {% elif report.status == 'IN_PROGRESS' %}
+                        <span class="badge bg-warning text-dark">In Progress</span>
+                    {% elif report.status == 'RESOLVED' %}
+                        <span class="badge bg-success">Resolved</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'report_detail' report.pk %}" class="btn btn-sm btn-info">Detail</a>
+                    <a href="{% url 'report_update' report.pk %}" class="btn btn-sm btn-primary">Edit</a>
+                    <a href="{% url 'report_delete' report.pk %}" class="btn btn-sm btn-danger">Hapus</a>
+
+                    <form action="{% url 'update_status' report.pk %}" method="post" class="d-inline"
+                          onsubmit="return confirm('Yakin ingin mengubah status laporan ini?');">
+                        {% csrf_token %}
+                        {% if report.status == 'REPORTED' %}
+                            <button class="btn btn-sm btn-warning" name="status" value="VERIFIED">Verifikasi</button>
+                        {% elif report.status == 'VERIFIED' %}
+                            <button class="btn btn-sm btn-warning" name="status" value="IN_PROGRESS">Proses</button>
+                        {% elif report.status == 'IN_PROGRESS' %}
+                            <button class="btn btn-sm btn-success" name="status" value="RESOLVED">Selesaikan</button>
+                        {% endif %}
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="page-card text-center mt-4">
+    <h4>Belum ada laporan</h4>
+    <p class="text-muted">Silakan tambahkan laporan pertama.</p>
+    <a href="{% url 'report_create' %}" class="btn btn-success">
+        <i class="bi bi-plus-lg"></i> Tambah Laporan
+    </a>
+</div>
+{% endif %}
+
+{% endblock %}

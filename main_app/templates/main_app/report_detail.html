@@ -1,74 +1,54 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Detail Laporan</title>
+{% extends 'base.html' %}
 
-    <style>
-        body{
-            font-family: Arial, sans-serif;
-            background: linear-gradient(to right, #141e30, #243b55);
-            color: white;
-            text-align: center;
-        }
+{% block title %}Detail Laporan{% endblock %}
 
-        .container{
-            margin-top: 80px;
-        }
+{% block content %}
 
-        .card{
-            background: #1f2a40;
-            padding: 25px;
-            border-radius: 10px;
-            display: inline-block;
-            text-align: left;
-            width: 60%;
-        }
+<nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb bg-white px-3 py-2 rounded shadow-sm">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'report_list' %}">Reports</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Detail Laporan</li>
+    </ol>
+</nav>
 
-        h2{
-            text-align: center;
-        }
+<div class="page-card">
+    <h2 class="mb-4">📄 Detail Laporan</h2>
 
-        p{
-            margin: 10px 0;
-        }
+    <table class="table table-bordered">
+        <tr>
+            <th width="25%">Title</th>
+            <td>{{ report.title }}</td>
+        </tr>
+        <tr>
+            <th>Category</th>
+            <td>{{ report.category }}</td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            <td>{{ report.description }}</td>
+        </tr>
+        <tr>
+            <th>Location</th>
+            <td>{{ report.location }}</td>
+        </tr>
+        <tr>
+            <th>Status</th>
+            <td>
+                {% if report.status == 'REPORTED' %}
+                    <span class="badge bg-secondary">Reported</span>
+                {% elif report.status == 'VERIFIED' %}
+                    <span class="badge bg-primary">Verified</span>
+                {% elif report.status == 'IN_PROGRESS' %}
+                    <span class="badge bg-warning text-dark">In Progress</span>
+                {% elif report.status == 'RESOLVED' %}
+                    <span class="badge bg-success">Resolved</span>
+                {% endif %}
+            </td>
+        </tr>
+    </table>
 
-        .btn{
-            text-decoration: none;
-            color: white;
-            background: #00adb5;
-            padding: 10px 20px;
-            border-radius: 5px;
-            margin-right: 10px;
-        }
-
-        .btn:hover{
-            background: #008891;
-        }
-    </style>
-</head>
-
-<body>
-
-<div class="container">
-
-    <div class="card">
-
-        <h2>📄 Detail Laporan</h2>
-
-        <p><b>Judul:</b> {{ object.title }}</p>
-        <p><b>Kategori:</b> {{ object.category }}</p>
-        <p><b>Deskripsi:</b> {{ object.description }}</p>
-        <p><b>Lokasi:</b> {{ object.location }}</p>
-        <p><b>Status:</b> {{ object.status }}</p>
-
-        <br>
-
-        <a href="{% url 'report_list' %}" class="btn">⬅ Kembali</a>
-        <a href="{% url 'report_update' object.pk %}" class="btn">✏️ Edit</a>
-
-    </div>
-
+    <a href="{% url 'report_list' %}" class="btn btn-secondary">Kembali</a>
 </div>
 
-</body>
-</html>
+{% endblock %}

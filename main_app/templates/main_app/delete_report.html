@@ -1,76 +1,31 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Hapus Laporan</title>
+{% extends 'base.html' %}
 
-    <style>
-        body{
-            font-family: Arial, sans-serif;
-            background: linear-gradient(to right, #141e30, #243b55);
-            color: white;
-            text-align: center;
-        }
+{% block title %}Hapus Laporan{% endblock %}
 
-        .container{
-            margin-top: 100px;
-        }
+{% block content %}
 
-        .card{
-            background: #1f2a40;
-            padding: 30px;
-            border-radius: 10px;
-            display: inline-block;
-        }
+<nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb bg-white px-3 py-2 rounded shadow-sm">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'report_list' %}">Reports</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Hapus Laporan</li>
+    </ol>
+</nav>
 
-        button{
-            background: #ff4c4c;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-right: 10px;
-        }
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="page-card text-center">
+            <h3 class="mb-3 text-danger">⚠️ Konfirmasi Hapus</h3>
+            <p>Apakah kamu yakin ingin menghapus laporan <strong>{{ object.title }}</strong>?</p>
+            <p class="text-muted">Tindakan ini tidak dapat dibatalkan.</p>
 
-        button:hover{
-            background: #cc0000;
-        }
-
-        a{
-            text-decoration: none;
-            color: white;
-            background: #00adb5;
-            padding: 10px 20px;
-            border-radius: 5px;
-        }
-
-        a:hover{
-            background: #008891;
-        }
-    </style>
-</head>
-
-<body>
-
-<div class="container">
-
-    <div class="card">
-        <h2> Hapus Laporan</h2>
-
-        <p>Apakah kamu yakin ingin menghapus:</p>
-        <h3>"{{ object.title }}"</h3>
-
-        <form method="POST">
-            {% csrf_token %}
-            <button type="submit">🗑 Ya, Hapus</button>
-        </form>
-
-        <br><br>
-
-        <a href="{% url 'report_list' %}">⬅ Batal</a>
+            <form method="post" onsubmit="return confirm('Yakin ingin menghapus laporan ini?');">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Hapus</button>
+                <a href="{% url 'report_list' %}" class="btn btn-secondary">Batal</a>
+            </form>
+        </div>
     </div>
-
 </div>
 
-</body>
-</html>
+{% endblock %}

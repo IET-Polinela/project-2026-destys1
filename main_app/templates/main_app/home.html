@@ -1,77 +1,43 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>UrbanPulse - Velora City</title>
-    <style>
-        body{
-            font-family: Arial, sans-serif;
-            background: linear-gradient(to right, #141e30, #243b55);
-            text-align: center;
-            color: white;
-        }
+{% extends 'base.html' %}
 
-        .container{
-            margin-top: 80px;
-        }
+{% block title %}Home - Velora City{% endblock %}
 
-        h1{
-            font-size: 40px;
-        }
+{% block content %}
 
-        p{
-            width: 60%;
-            margin: auto;
-            margin-top: 20px;
-            line-height: 1.6;
-        }
+<nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb bg-white px-3 py-2 rounded shadow-sm">
+        <li class="breadcrumb-item active" aria-current="page">Home</li>
+    </ol>
+</nav>
 
-        a{
-            text-decoration: none;
-            color: white;
-            background: #00adb5;
-            padding: 12px 25px;
-            margin: 10px;
-            border-radius: 8px;
-            display: inline-block;
-            transition: 0.3s;
-        }
+<div class="page-card text-center">
+    <h1 class="mb-3 fw-bold">🏙️ UrbanPulse - Velora City</h1>
 
-        a:hover{
-            background: #008891;
-        }
-    </style>
-</head>
-
-<body>
-
-<div class="container">
-
-    <h1>🌆 UrbanPulse - Velora City 🌆</h1>
-
-    <p>
-    UrbanPulse adalah aplikasi berbasis web yang dirancang untuk membantu warga Velora City 
-    dalam melaporkan berbagai permasalahan kota seperti jalan rusak, lampu jalan mati, 
-    sampah menumpuk, banjir lokal, dan fasilitas umum yang bermasalah.
+    <p class="lead text-muted mb-4">
+        UrbanPulse adalah aplikasi berbasis web yang membantu warga Velora City
+        melaporkan berbagai permasalahan kota seperti jalan rusak, lampu jalan mati,
+        sampah menumpuk, banjir lokal, dan fasilitas umum yang bermasalah.
     </p>
 
-    <p>
-    Dengan konsep smart city, aplikasi ini memungkinkan masyarakat untuk berpartisipasi 
-    secara aktif dalam menjaga kondisi kota secara cepat, transparan, dan terstruktur.
+    <p class="text-muted mb-4">
+        Dengan konsep smart city, aplikasi ini mendorong masyarakat untuk berpartisipasi
+        secara aktif dalam menjaga kondisi kota secara cepat, transparan, dan terstruktur.
     </p>
 
-    <br>
-
-    <!-- ✅ MENU NAVIGASI  -->
-    <a href="{% url 'report_create' %}">➕ Laporkan Masalah</a>
-    <a href="{% url 'report_list' %}">📋 Lihat Laporan</a>
-
-    <br><br>
-
-    <!-- OPTIONAL -->
-    <a href="/about/">About</a>
-    <a href="/contacts/">Contacts</a>
-
+    <div class="d-flex flex-wrap justify-content-center gap-2">
+        <a href="{% url 'report_create' %}" class="btn btn-success">
+            <i class="bi bi-plus-lg"></i> Laporkan Masalah
+        </a>
+        <a href="{% url 'report_list' %}" class="btn btn-primary">
+            <i class="bi bi-card-list"></i> Lihat Laporan
+        </a>
+        <a href="/about/" class="btn btn-info text-white">
+            <i class="bi bi-info-circle"></i> About
+        </a>
+        <a href="/contacts/" class="btn btn-secondary">
+            <i class="bi bi-person-lines-fill"></i> Contacts
+        </a>
+    </div>
 </div>
 
-</body>
-</html>
+{% endblock %}
