@@ -1,65 +1,20 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>About - UrbanPulse</title>
-    <style>
-        body{
-            font-family: Arial, sans-serif;
-            background: linear-gradient(to right, #141e30, #243b55);
-            color: white;
-            text-align: center;
-        }
+{% extends 'base.html' %}
 
-        .container{
-            margin: 80px auto;
-            width: 70%;
-        }
+{% block title %}About{% endblock %}
 
-        a{
-            text-decoration: none;
-            color: white;
-            background: #00adb5;
-            padding: 10px 20px;
-            border-radius: 5px;
-        }
+{% block content %}
+<nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">About</li>
+    </ol>
+</nav>
 
-        a:hover{
-            background: #008891;
-        }
-    </style>
-</head>
-
-<body>
-
-<div class="container">
-
-    <h1>📌 About UrbanPulse</h1>
-
+<div class="page-card">
+    <h2 class="section-title mb-3">ℹ️ About Velora City</h2>
     <p>
-    UrbanPulse merupakan aplikasi berbasis web yang dikembangkan untuk mendukung 
-    konsep smart city di Velora City. Aplikasi ini berfungsi sebagai platform 
-    pelaporan digital yang memungkinkan masyarakat untuk menyampaikan berbagai 
-    permasalahan kota secara cepat dan terstruktur.
+        UrbanPulse - Velora City adalah aplikasi pelaporan masyarakat yang dirancang untuk membantu warga
+        dalam melaporkan berbagai permasalahan kota secara cepat, mudah, dan terstruktur.
     </p>
-
-    <p>
-    Permasalahan yang dapat dilaporkan meliputi jalan rusak, lampu jalan mati, 
-    sampah menumpuk, banjir lokal, serta kerusakan fasilitas umum lainnya. 
-    Dengan adanya UrbanPulse, diharapkan komunikasi antara warga dan pihak 
-    pengelola kota dapat berjalan lebih efektif dan transparan.
-    </p>
-
-    <p>
-    Aplikasi ini juga bertujuan untuk meningkatkan partisipasi masyarakat dalam 
-    menjaga lingkungan kota serta membantu pemerintah dalam mengambil keputusan 
-    berdasarkan laporan yang masuk.
-    </p>
-
-    <br>
-
-    <a href="/">⬅ Kembali ke Home</a>
-
 </div>
-
-</body>
-</html>
+{% endblock %}

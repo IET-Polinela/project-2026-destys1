@@ -1,69 +1,19 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Contacts - UrbanPulse</title>
-    <style>
-        body{
-            font-family: Arial, sans-serif;
-            background: linear-gradient(to right, #141e30, #243b55);
-            color: white;
-            text-align: center;
-        }
+{% extends 'base.html' %}
 
-        .container{
-            margin: 80px auto;
-            width: 70%;
-        }
+{% block title %}Contact{% endblock %}
 
-        .card{
-            background: rgba(255,255,255,0.1);
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 20px;
-        }
+{% block content %}
+<nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Contact</li>
+    </ol>
+</nav>
 
-        a{
-            text-decoration: none;
-            color: white;
-            background: #00adb5;
-            padding: 10px 20px;
-            border-radius: 5px;
-        }
-
-        a:hover{
-            background: #008891;
-        }
-    </style>
-</head>
-
-<body>
-
-<div class="container">
-
-    <h1>📞 Contact UrbanPulse</h1>
-
-    <p>
-    Jika Anda memiliki pertanyaan, masukan, atau kendala dalam menggunakan aplikasi UrbanPulse,
-    silakan hubungi tim pengelola Velora City melalui informasi berikut:
-    </p>
-
-    <div class="card">
-        <p><b>📍 Alamat:</b> Pusat Smart City Velora City</p>
-        <p><b>📧 Email:</b> support@urbanpulse.velora</p>
-        <p><b>📱 Telepon:</b> +62 812-3456-7890</p>
-    </div>
-
-    <div class="card">
-        <p><b>🛠️ Developer:</b> Mahasiswa Teknologi Rekayasa Internet</p>
-        <p><b>🏫 Institusi:</b> (Polinela)</p>
-        <p><b>📅 Tahun:</b> 2026</p>
-    </div>
-
-    <br>
-
-    <a href="/">⬅ Kembali ke Home</a>
-
+<div class="page-card">
+    <h2 class="section-title mb-3">📞 Contact</h2>
+    <p>Email: support@veloracity.com</p>
+    <p>Phone: +62 812 3456 7890</p>
+    <p>Address: Velora City Smart Service Center</p>
 </div>
-
-</body>
-</html>
+{% endblock %}
