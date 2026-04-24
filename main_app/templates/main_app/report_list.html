@@ -13,9 +13,12 @@
 
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h2 class="mb-0">📋 Daftar Laporan</h2>
-    <a href="{% url 'report_create' %}" class="btn btn-success">
-        <i class="bi bi-plus-lg"></i> Tambah Laporan
-    </a>
+
+    {% if user.is_authenticated and user.is_admin %}
+        <a href="{% url 'report_create' %}" class="btn btn-success">
+            <i class="bi bi-plus-lg"></i> Tambah Laporan
+        </a>
+    {% endif %}
 </div>
 
 {% if reports %}
@@ -47,20 +50,23 @@
                 </td>
                 <td>
                     <a href="{% url 'report_detail' report.pk %}" class="btn btn-sm btn-info">Detail</a>
-                    <a href="{% url 'report_update' report.pk %}" class="btn btn-sm btn-primary">Edit</a>
-                    <a href="{% url 'report_delete' report.pk %}" class="btn btn-sm btn-danger">Hapus</a>
 
-                    <form action="{% url 'update_status' report.pk %}" method="post" class="d-inline"
-                          onsubmit="return confirm('Yakin ingin mengubah status laporan ini?');">
-                        {% csrf_token %}
-                        {% if report.status == 'REPORTED' %}
-                            <button class="btn btn-sm btn-warning" name="status" value="VERIFIED">Verifikasi</button>
-                        {% elif report.status == 'VERIFIED' %}
-                            <button class="btn btn-sm btn-warning" name="status" value="IN_PROGRESS">Proses</button>
-                        {% elif report.status == 'IN_PROGRESS' %}
-                            <button class="btn btn-sm btn-success" name="status" value="RESOLVED">Selesaikan</button>
-                        {% endif %}
-                    </form>
+                    {% if user.is_authenticated and user.is_admin %}
+                        <a href="{% url 'report_update' report.pk %}" class="btn btn-sm btn-primary">Edit</a>
+                        <a href="{% url 'report_delete' report.pk %}" class="btn btn-sm btn-danger">Hapus</a>
+
+                        <form action="{% url 'update_status' report.pk %}" method="post" class="d-inline"
+                              onsubmit="return confirm('Yakin ingin mengubah status laporan ini?');">
+                            {% csrf_token %}
+                            {% if report.status == 'REPORTED' %}
+                                <button class="btn btn-sm btn-warning" name="status" value="VERIFIED">Verifikasi</button>
+                            {% elif report.status == 'VERIFIED' %}
+                                <button class="btn btn-sm btn-warning" name="status" value="IN_PROGRESS">Proses</button>
+                            {% elif report.status == 'IN_PROGRESS' %}
+                                <button class="btn btn-sm btn-success" name="status" value="RESOLVED">Selesaikan</button>
+                            {% endif %}
+                        </form>
+                    {% endif %}
                 </td>
             </tr>
             {% endfor %}
@@ -71,9 +77,12 @@
 <div class="page-card text-center mt-4">
     <h4>Belum ada laporan</h4>
     <p class="text-muted">Silakan tambahkan laporan pertama.</p>
-    <a href="{% url 'report_create' %}" class="btn btn-success">
-        <i class="bi bi-plus-lg"></i> Tambah Laporan
-    </a>
+
+    {% if user.is_authenticated and user.is_admin %}
+        <a href="{% url 'report_create' %}" class="btn btn-success">
+            <i class="bi bi-plus-lg"></i> Tambah Laporan
+        </a>
+    {% endif %}
 </div>
 {% endif %}
 
