@@ -4,6 +4,8 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from django.views import View
 from django.urls import reverse_lazy
 from django.contrib import messages
+from django.http import JsonResponse
+from django.db.models import Q
 
 from .models import Report
 
@@ -138,3 +140,38 @@ class ReportUpdateStatusView(AdminRequiredMixin, View):
         report.save()
         messages.success(request, "Status berhasil diperbarui")
         return redirect('report_list')
+
+class ReportLiveSearchView(View):
+    def get(self, request, *args, **kwargs):
+        query = request.GET.get('q', '').strip()
+
+        reports = Report.objects.all()
+
+        if query:
+            reports = reports.filter(
+                Q(title__icontains=query) |
+                Q(category__icontains=query) |
+                Q(location__icontains=query) |
+                Q(status__icontains=query)
+            )
+
+        data = list(reports.order_by('-created_at').values(
+            'id', 'title', 'category', 'location', 'status'
+        ))[:20]
+
+        return JsonResponse({'reports': data})
+
+
+class ReportDetailJsonView(View):
+    def get(self, request, pk, *args, **kwargs):
+        report = get_object_or_404(Report, pk=pk)
+
+        return JsonResponse({
+            'id': report.id,
+            'title': report.title,
+            'category': report.category,
+            'description': report.description,
+            'location': report.location,
+            'status': report.status,
+            'created_at': report.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+        })
