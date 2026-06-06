@@ -69,18 +69,21 @@
         .brand-logo {
 
             font-size: 1.3rem;
+
             letter-spacing: 0.5px;
         }
 
         .dashboard-title {
 
             font-size: 2rem;
+
             font-weight: 700;
         }
 
         .menu-icon {
 
             font-size: 2rem;
+
             color: #2563eb;
         }
 
@@ -96,6 +99,152 @@
             color: white;
         }
 
+.report-card {
+
+    max-width: 1000px;
+
+    margin: 0 auto;
+
+    background:
+    #fafafa;
+
+    border-radius:
+        20px;
+
+    box-shadow:
+        0 4px 15px
+        rgba(0,0,0,0.08);
+}
+
+.report-card:hover {
+
+    transform:
+        translateY(-5px);
+
+    box-shadow:
+        0 10px 25px
+        rgba(0,0,0,0.12);
+}
+
+.status-badge {
+
+    font-size: 0.8rem;
+
+    padding: 6px 12px;
+
+    border-radius: 50px;
+}
+
+.progress {
+
+    height: 28px;
+
+    border-radius: 50px;
+
+    background: #e5e7eb;
+}
+
+.progress-bar {
+
+    font-weight: 600;
+}
+
+.status-draft {
+
+    background: #6c757d;
+}
+
+.status-reported {
+
+    background: #ffc107;
+
+    color: black;
+}
+
+.status-verified {
+
+    background: #20c997;
+}
+
+.modal-content {
+
+    border: none;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+}
+
+.modal-header {
+
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #3b82f6
+        );
+
+    color: white;
+}
+
+.modal-title {
+
+    font-weight: 700;
+}
+
+.form-control {
+
+    border-radius: 10px;
+}
+
+.form-control:focus {
+
+    box-shadow:
+        0 0 0 0.25rem
+        rgba(37,99,235,.2);
+}
+
+.nav-tabs {
+
+    border-bottom: none;
+}
+
+.nav-tabs .nav-link {
+
+    border: none;
+
+    border-radius: 30px;
+
+    padding: 10px 22px;
+
+    font-size: 14px;
+
+    margin-right: 10px;
+
+    font-weight: 600;
+
+    color: #2563eb;
+
+    transition: all 0.3s ease;
+}
+
+.nav-tabs .nav-link:hover {
+
+    background: #dbeafe;
+}
+
+.nav-tabs .nav-link.active {
+
+    background: #2563eb;
+
+    color: white;
+
+    box-shadow:
+        0 4px 12px
+        rgba(37,99,235,.25);
+}
+
+
     </style>
 
 </head>
@@ -107,11 +256,11 @@
         <div class="container-fluid px-4 py-2">
 
             <a class="navbar-brand fw-bold brand-logo"
-               href="#">
+               href="#dashboard">
 
                 <i class="bi bi-buildings-fill me-2"></i>
 
-                Smart City Portal
+                Velora City Portal
 
             </a>
 
@@ -121,8 +270,12 @@
 
     </nav>
 
-    <main class="container-fluid px-4 mt-4"
-          id="app-content"></main>
+    <main
+        class="container-fluid px-4 mt-4"
+        id="app-content">
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script src="js/api.js"></script>
 

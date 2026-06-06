@@ -35,8 +35,25 @@ class AdminRequiredMixin:
 # LIST VIEW - boleh diakses semua user
 class ReportListView(ListView):
     model = Report
-    template_name = 'main_app/report_list.html'
-    context_object_name = 'reports'
+    template_name = (
+        'main_app/report_list.html'
+    )
+
+    context_object_name = (
+        'reports'
+    )
+
+    def get_queryset(self):
+
+        return (
+            Report.objects
+            .exclude(
+                status='DRAFT'
+            )
+            .order_by(
+                '-created_at'
+            )
+        )
 
 
 # DETAIL VIEW - boleh diakses semua user

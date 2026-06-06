@@ -1,6 +1,7 @@
 from rest_framework import (
     viewsets,
-    permissions
+    permissions,
+    pagination
 )
 
 from .models import Report
@@ -8,24 +9,80 @@ from .serializers import ReportSerializer
 from .permissions import *
 
 
-class ReportViewSet(viewsets.ModelViewSet):
+class ReportPagination(
+    pagination.PageNumberPagination
+):
 
-    serializer_class = ReportSerializer
+    page_size = 10
+
+    page_size_query_param = (
+        'page_size'
+    )
+
+    max_page_size = 100
+
+
+class ReportViewSet(
+    viewsets.ModelViewSet
+):
+
+    serializer_class = (
+        ReportSerializer
+    )
+
+    pagination_class = (
+        ReportPagination
+    )
 
     def get_queryset(self):
 
         user = self.request.user
 
+        queryset = (
+            Report.objects
+            .all()
+            .order_by(
+                '-updated_at'
+            )
+        )
+
+        tab = (
+            self.request
+            .query_params
+            .get('tab')
+        )
+
+        if tab == 'my_reports':
+
+            return queryset.filter(
+                reporter=user
+            )
+
+        elif tab == 'feed':
+
+            return (
+                queryset
+                .exclude(
+                    reporter=user
+                )
+                .exclude(
+                    status='DRAFT'
+                )
+            )
+
         if user.is_admin:
-            return Report.objects.exclude(
+
+            return queryset.exclude(
                 status='DRAFT'
             )
 
         return (
-            Report.objects.exclude(
+            queryset
+            .exclude(
                 status='DRAFT'
-            ) |
-            Report.objects.filter(
+            )
+            |
+            queryset.filter(
                 reporter=user
             )
         )
@@ -37,16 +94,23 @@ class ReportViewSet(viewsets.ModelViewSet):
             'partial_update',
             'destroy'
         ]:
+
             return [
-                permissions.IsAuthenticated(),
+                permissions
+                .IsAuthenticated(),
+
                 IsOwnerAndDraftOrReadOnly()
             ]
 
         return [
-            permissions.IsAuthenticated()
+            permissions
+            .IsAuthenticated()
         ]
 
-    def perform_create(self, serializer):
+    def perform_create(
+        self,
+        serializer
+    ):
 
         serializer.save(
             reporter=self.request.user
