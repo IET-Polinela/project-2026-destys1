@@ -31,6 +31,11 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
+CSRF_TRUSTED_ORIGINS = [
+    "http://103.151.63.71:8007",
+]
+
+
 
 # Application definition
 
