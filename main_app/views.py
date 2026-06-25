@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404, redirect, render
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.views import View
 from django.urls import reverse_lazy
@@ -33,7 +33,7 @@ class AdminRequiredMixin:
 
 
 # LIST VIEW - boleh diakses semua user
-class ReportListView(ListView):
+class ReportListView(AdminRequiredMixin, ListView):
     model = Report
     template_name = (
         'main_app/report_list.html'
@@ -57,7 +57,7 @@ class ReportListView(ListView):
 
 
 # DETAIL VIEW - boleh diakses semua user
-class ReportDetailView(DetailView):
+class ReportDetailView(AdminRequiredMixin, DetailView):
     model = Report
     template_name = 'main_app/report_detail.html'
     context_object_name = 'report'
@@ -160,6 +160,18 @@ class ReportUpdateStatusView(AdminRequiredMixin, View):
 
 class ReportLiveSearchView(View):
     def get(self, request, *args, **kwargs):
+
+        if (
+            not request.user.is_authenticated
+            or not request.user.is_admin
+        ):
+            return JsonResponse(
+                {
+                    'detail': 'Forbidden'
+                },
+                status=403
+            )
+
         query = request.GET.get('q', '').strip()
 
         reports = Report.objects.all()
@@ -172,11 +184,19 @@ class ReportLiveSearchView(View):
                 Q(status__icontains=query)
             )
 
-        data = list(reports.order_by('-created_at').values(
-            'id', 'title', 'category', 'location', 'status'
-        ))[:20]
+        data = list(
+            reports.order_by('-created_at').values(
+                'id',
+                'title',
+                'category',
+                'location',
+                'status'
+            )
+        )[:20]
 
-        return JsonResponse({'reports': data})
+        return JsonResponse({
+            'reports': data
+        })
 
 
 class ReportDetailJsonView(View):
@@ -192,3 +212,23 @@ class ReportDetailJsonView(View):
             'status': report.status,
             'created_at': report.created_at.strftime('%Y-%m-%d %H:%M:%S'),
         })
+
+
+def report_detail_api(request, pk):
+
+    report = get_object_or_404(
+        Report,
+        pk=pk
+    )
+
+    return JsonResponse({
+        'id': report.id,
+        'title': report.title,
+        'category': report.category,
+        'description': report.description,
+        'location': report.location,
+        'status': report.status,
+        'created_at': report.created_at.strftime(
+            '%Y-%m-%d %H:%M:%S'
+        ),
+    })

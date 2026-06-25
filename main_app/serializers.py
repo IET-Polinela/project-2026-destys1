@@ -11,6 +11,11 @@ class ReportSerializer(
         .SerializerMethodField()
     )
 
+    reporter_name = (
+        serializers
+        .SerializerMethodField()
+    )
+
     is_owner = (
         serializers
         .SerializerMethodField()
@@ -28,6 +33,7 @@ class ReportSerializer(
             'location',
             'status',
             'reporter',
+            'reporter_name',
             'is_owner',
             'created_at',
             'updated_at'
@@ -37,6 +43,31 @@ class ReportSerializer(
         self,
         obj
     ):
+
+        return (
+            "Warga Anonim"
+        )
+    
+    def get_reporter_name(
+        self,
+        obj
+    ):
+
+        request = (
+            self.context.get(
+                'request'
+            )
+        )
+
+        if (
+            request and
+            request.user.is_authenticated and
+            obj.reporter == request.user
+        ):
+
+            return (
+                obj.reporter.username
+            )
 
         return (
             "Warga Anonim"
