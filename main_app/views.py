@@ -6,6 +6,7 @@ from django.urls import reverse_lazy
 from django.contrib import messages
 from django.http import JsonResponse
 from django.db.models import Q
+from django.core.exceptions import PermissionDenied
 
 from .models import Report
 
@@ -108,6 +109,22 @@ class ReportUpdateView(AdminRequiredMixin, UpdateView):
     template_name = 'main_app/update_report.html'
     success_url = reverse_lazy('report_list')
 
+    def get(self, request, *args, **kwargs):
+        report = self.get_object()
+
+        if report.reporter and not report.reporter.is_admin:
+            raise PermissionDenied
+
+        return super().get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        report = self.get_object()
+
+        if report.reporter and not report.reporter.is_admin:
+            raise PermissionDenied
+
+        return super().post(request, *args, **kwargs)
+
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
         form.fields['title'].widget.attrs.update({
@@ -129,9 +146,11 @@ class ReportUpdateView(AdminRequiredMixin, UpdateView):
         return form
 
     def form_valid(self, form):
-        messages.success(self.request, "Laporan berhasil diperbarui")
+        messages.success(
+            self.request,
+            "Laporan berhasil diperbarui"
+        )
         return super().form_valid(form)
-
 
 # DELETE VIEW - hanya admin
 class ReportDeleteView(AdminRequiredMixin, DeleteView):
@@ -139,10 +158,28 @@ class ReportDeleteView(AdminRequiredMixin, DeleteView):
     template_name = 'main_app/delete_report.html'
     success_url = reverse_lazy('report_list')
 
-    def form_valid(self, form):
-        messages.success(self.request, "Laporan berhasil dihapus")
-        return super().form_valid(form)
+    def get(self, request, *args, **kwargs):
+        report = self.get_object()
 
+        if report.reporter and not report.reporter.is_admin:
+            raise PermissionDenied
+
+        return super().get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        report = self.get_object()
+
+        if report.reporter and not report.reporter.is_admin:
+            raise PermissionDenied
+
+        return super().post(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        messages.success(
+            self.request,
+            "Laporan berhasil dihapus"
+        )
+        return super().form_valid(form)
 
 # UPDATE STATUS - hanya admin
 class ReportUpdateStatusView(AdminRequiredMixin, View):
