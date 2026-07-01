@@ -1,5 +1,5 @@
 const BASE_URL =
-   'http://103.151.63.71:8007';
+    'http://103.151.63.71:8007';
 
 async function requestAPI(
     endpoint,
@@ -43,6 +43,21 @@ async function requestAPI(
             `${BASE_URL}${endpoint}`,
             config
         );
+
+    // ===============================
+    // INTERCEPTOR 401
+    // ===============================
+    if (response.status === 401) {
+
+        alert(
+            'Sesi Anda telah habis. Silakan login kembali.'
+        );
+
+        localStorage.clear();
+
+        window.location.hash =
+            '#login';
+    }
 
     return response;
 }

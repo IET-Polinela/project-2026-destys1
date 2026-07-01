@@ -29,13 +29,16 @@ async function loadDashboardData(
             data
         );
 
+        console.log("RESULTS:", data.results);
+        console.log("FULL DATA:", data);
+        
         if (
             response.status !== 200
         ) {
 
             document
                 .getElementById(
-                    'report-list'
+                    'listContainer'
                 )
                 .innerHTML = `
 
@@ -121,7 +124,7 @@ function getStatusStyle(
 
         document
             .getElementById(
-                'report-list'
+                'listContainer'
             )
             .innerHTML = `
 
@@ -139,7 +142,7 @@ function renderList(reports) {
 
     const container =
         document.getElementById(
-            'report-list'
+            'listContainer'
         );
 
     if (!container) return;
@@ -210,27 +213,29 @@ else if (
         '100%';
 }
 
-            return `
+   return `
 
-            <div
-                class="
-                    card
-                    report-card
-                    mb-4
-                    shadow-sm
-                "
-                style="
-                    border:none;
-                    border-radius:20px;
-                ">
+<div class="col">
 
-                <div
-    class="
-        card-body
-        text-center
-        py-2
-        px-4
-    ">
+    <div
+        class="
+            card
+            report-card
+            mb-4
+            shadow-sm
+        "
+        style="
+            border:none;
+            border-radius:20px;
+        ">
+
+        <div
+            class="
+                card-body
+                text-center
+                py-2
+                px-4
+            ">
 
 <h4
     class="
@@ -369,8 +374,11 @@ ${
                 </div>
 
             </div>
+        
+        </div>
 
             `;
+
         }).join('');
 }
 
@@ -434,7 +442,7 @@ async function loadSummaryStats() {
 
         const container =
             document.getElementById(
-                'summary-content'
+                'summaryStats'
             );
 
         if (!container) return;
@@ -452,7 +460,9 @@ async function loadSummaryStats() {
             <small>DRAFT</small>
 
             <h4 class="mb-0 fw-bold">
-                ${draft}
+        <span class="badge bg-secondary">
+            ${draft}
+        </span>
             </h4>
 
         </div>
@@ -475,7 +485,9 @@ async function loadSummaryStats() {
             <small>REPORTED</small>
 
             <h4 class="mb-0 fw-bold">
-                ${reported}
+            <span class="badge bg-warning text-dark">
+            ${reported}
+        </span>
             </h4>
 
         </div>
@@ -495,7 +507,9 @@ async function loadSummaryStats() {
             <small>IN PROGRESS</small>
 
             <h4 class="mb-0 fw-bold">
-                ${inProgress}
+            <span class="badge bg-info">
+            ${inProgress}
+        </span>
             </h4>
 
         </div>
@@ -515,7 +529,9 @@ async function loadSummaryStats() {
             <small>VERIFIED</small>
 
             <h4 class="mb-0 fw-bold">
-                ${verified}
+            <span class="badge bg-primary">
+             ${verified}
+        </span>
             </h4>
 
         </div>
@@ -535,7 +551,9 @@ async function loadSummaryStats() {
             <small>RESOLVED</small>
 
             <h4 class="mb-0 fw-bold">
-                ${resolved}
+            <span class="badge bg-success">
+            ${resolved}
+        </span>
             </h4>
 
         </div>
@@ -556,70 +574,68 @@ async function loadSummaryStats() {
     }
 }
 
-function renderPagination(
-    response
-) {
+function renderPagination(response) {
 
     const container =
         document.getElementById(
-            'pagination-container'
+            'paginationContainer'
         );
 
     if (!container) return;
 
-    let html = '';
+    let html = `
+        <nav>
+            <ul class="pagination justify-content-center">
+    `;
 
-    if (
-        response.previous
-    ) {
-
+    // Previous
+    if (response.previous) {
         html += `
-
-            <button
-                class="
-                    btn
-                    btn-outline-primary
-                    me-2
-                "
-                onclick="
-                    loadDashboardData(
-                        '${currentTab}',
-                        ${currentPage - 1}
-                    )
-                ">
-
-                Previous
-
-            </button>
+            <li class="page-item">
+                <button
+                    class="page-link"
+                    onclick="loadDashboardData('${currentTab}', ${currentPage - 1})">
+                    Previous
+                </button>
+            </li>
         `;
     }
 
-    if (
-        response.next
-    ) {
+    // Nomor halaman
+    const totalPages = Math.ceil(response.count / 10);
+
+    for (let i = 1; i <= totalPages; i++) {
 
         html += `
-
-            <button
-                class="
-                    btn
-                    btn-outline-primary
-                "
-                onclick="
-                    loadDashboardData(
-                        '${currentTab}',
-                        ${currentPage + 1}
-                    )
-                ">
-
-                Next
-
-            </button>
+            <li class="page-item ${i === currentPage ? 'active' : ''}">
+                <button
+                    class="page-link"
+                    onclick="loadDashboardData('${currentTab}', ${i})">
+                    ${i}
+                </button>
+            </li>
         `;
     }
 
-    container.innerHTML =
-        html;
+    // Next
+    if (response.next) {
+        html += `
+            <li class="page-item">
+                <button
+                    class="page-link"
+                    onclick="loadDashboardData('${currentTab}', ${currentPage + 1})">
+                    Next
+                </button>
+            </li>
+        `;
+    }
+
+    html += `
+            </ul>
+        </nav>
+    `;
+
+    container.innerHTML = html;
 }
 
 let editingReportId =
@@ -697,7 +713,7 @@ function setupDashboardEvents() {
 
     const feedTab =
         document.getElementById(
-            'feedTab'
+            'tabFeedKota'
         );
 
     if (myReportsTab) {
@@ -746,7 +762,7 @@ function setupDashboardEvents() {
 
     const saveDraftBtn =
         document.getElementById(
-            'saveDraftBtn'
+            'btnDraft'
         );
 
     if (saveDraftBtn) {
@@ -764,7 +780,7 @@ function setupDashboardEvents() {
 
     const submitReportBtn =
         document.getElementById(
-            'submitReportBtn'
+            'btnSubmit'
         );
 
     if (submitReportBtn) {
@@ -787,22 +803,22 @@ async function submitReport(
 
     const title =
         document.getElementById(
-            'title'
+            'inputTitle'
         ).value;
 
     const category =
         document.getElementById(
-            'category'
+            'inputCategory'
         ).value;
 
     const description =
         document.getElementById(
-            'description'
+            'inputDescription'
         ).value;
 
     const location =
         document.getElementById(
-            'location'
+            'inputLocation'
         ).value;
 
     if (
@@ -873,7 +889,7 @@ async function submitReport(
         modal.hide();
 
         document.getElementById(
-            'report-form'
+            'reportForm'
         ).reset();
 
         editingReportId =

@@ -2,7 +2,7 @@ function renderNavbar() {
 
     const navMenu =
         document.getElementById(
-            'nav-menu'
+            'nav-menus'
         );
 
     const hash =
@@ -155,43 +155,39 @@ const routes = {
 
                     </div>
 
-                    <form id="login-form">
+                    <form id="loginForm">
 
-                        <div class="mb-3">
+    <div class="mb-3">
 
-                            <label class="form-label">
+        <label class="form-label">
+            Username
+        </label>
 
-                                Username
+        <input
+            type="text"
+            id="loginUsername"
+            name="username"
+            class="form-control rounded-4 py-2"
+            placeholder="Masukkan username"
+            required>
 
-                            </label>
+    </div>
 
-                            <input type="text"
-                                   id="loginUsername"
-                                   class="form-control
-                                          rounded-4
-                                          py-2"
-                                   placeholder="Masukkan username"
-                                   required>
+    <div class="mb-4">
 
-                        </div>
+        <label class="form-label">
+            Password
+        </label>
 
-                        <div class="mb-4">
+        <input
+            type="password"
+            id="loginPassword"
+            name="password"
+            class="form-control rounded-4 py-2"
+            placeholder="Masukkan password"
+            required>
 
-                            <label class="form-label">
-
-                                Password
-
-                            </label>
-
-                            <input type="password"
-                                   id="loginPassword"
-                                   class="form-control
-                                          rounded-4
-                                          py-2"
-                                   placeholder="Masukkan password"
-                                   required>
-
-                        </div>
+    </div>
 
                         <button type="submit"
                                 class="btn
@@ -263,21 +259,22 @@ const routes = {
 
                 </div>
 
-                <button
-                    class="btn
-                           btn-light
-                           fw-semibold
-                           shadow-sm"
-                    data-bs-toggle="modal"
-                    data-bs-target="#reportModal">
+               <button
+    id="btnBukaModal"
+    class="btn
+           btn-light
+           fw-semibold
+           shadow-sm"
+    data-bs-toggle="modal"
+    data-bs-target="#reportModal">
 
-                    <i class="bi
-                              bi-plus-circle-fill
-                              me-2"></i>
+    <i class="bi
+              bi-plus-circle-fill
+              me-2"></i>
 
-                    Tambah Laporan
+    Tambah Laporan
 
-                </button>
+</button>
 
             </div>
 
@@ -303,7 +300,7 @@ const routes = {
 
             </h5>
 
-            <div id="summary-content">
+            <div id="summaryStats">
 
                 Loading...
 
@@ -358,7 +355,7 @@ const routes = {
 
         <button
             class="nav-link"
-            id="feedTab">
+            id="tabFeedKota">
 
             <i class="bi bi-globe-asia-australia me-1"></i>
 
@@ -370,14 +367,14 @@ const routes = {
 
 </ul>
 
-            <div id="report-list">
+            <div id="listContainer">
 
                 Loading laporan...
 
             </div>
 
             <div
-                id="pagination-container"
+                id="paginationContainer"
                 class="mt-4">
             </div>
 
@@ -408,16 +405,17 @@ const routes = {
                     );
                  ">
 
-                <h5 class="modal-title
-                           fw-bold">
+                <h5
+    id="reportModalLabel"
+    class="modal-title fw-bold">
 
-                    <i class="bi
-                              bi-pencil-square
-                              me-2"></i>
+    <i class="bi
+              bi-pencil-square
+              me-2"></i>
 
-                    Form Laporan
+    Buat Laporan Baru
 
-                </h5>
+</h5>
 
                 <button
                     type="button"
@@ -430,71 +428,75 @@ const routes = {
 
             <div class="modal-body">
 
-    <form id="report-form">
+    <form id="reportForm">
 
-        <div class="mb-3">
+    <div class="mb-3">
 
-            <label class="form-label fw-semibold">
-                Judul Laporan
-            </label>
+        <label class="form-label fw-semibold">
+            Judul Laporan
+        </label>
 
-            <input
-                type="text"
-                id="title"
-                class="form-control"
-                placeholder="Masukkan judul laporan"
-                required>
+        <input
+            type="text"
+            id="inputTitle"
+            class="form-control"
+            placeholder="Masukkan judul laporan"
+            required>
 
-        </div>
+    </div>
 
-        <div class="mb-3">
+    <div class="mb-3">
 
-            <label class="form-label fw-semibold">
-                Kategori
-            </label>
+        <label class="form-label fw-semibold">
+            Kategori
+        </label>
 
-            <input
-                type="text"
-                id="category"
-                class="form-control"
-                placeholder="Contoh: Banjir, Sampah"
-                required>
+        <select
+    id="inputCategory"
+    class="form-select"
+    required>
 
-        </div>
+    <option value="">Pilih Kategori</option>
+    <option value="Infrastruktur">Infrastruktur</option>
+    <option value="Kebersihan">Kebersihan</option>
+    <option value="Keamanan">Keamanan</option>
+    <option value="Lingkungan">Lingkungan</option>
+    <option value="Lalu Lintas">Lalu Lintas</option>
 
-        <div class="mb-3">
+</select>
 
-            <label class="form-label fw-semibold">
-                Deskripsi
-            </label>
+    </div>
 
-            <textarea
-                id="description"
-                class="form-control"
-                rows="4"
-                placeholder="Jelaskan kondisi yang terjadi..."
-                required></textarea>
+    <div class="mb-3">
 
-        </div>
+        <label class="form-label fw-semibold">
+            Deskripsi
+        </label>
 
-        <div class="mb-3">
+        <textarea
+            id="inputDescription"
+            class="form-control"
+            rows="4"
+            required></textarea>
 
-            <label class="form-label fw-semibold">
-                Lokasi
-            </label>
+    </div>
 
-            <input
-                type="text"
-                id="location"
-                class="form-control"
-                placeholder="Masukkan lokasi kejadian"
-                required>
+    <div class="mb-3">
 
-        </div>
+        <label class="form-label fw-semibold">
+            Lokasi
+        </label>
 
-    </form>
+        <input
+            type="text"
+            id="inputLocation"
+            class="form-control"
+            required>
 
-</div>
+    </div>
+
+</form>
+
 
             <div class="modal-footer">
 
@@ -508,25 +510,25 @@ const routes = {
 
                 </button>
 
-                <button
-                    type="button"
-                    class="btn
-                           btn-warning"
-                    id="saveDraftBtn">
+               <button
+    type="button"
+    class="btn
+           btn-warning"
+    id="btnDraft">
 
-                    Simpan Draft
+    Simpan Draft
 
-                </button>
+</button>
 
-                <button
-                    type="button"
-                    class="btn
-                           btn-primary"
-                    id="submitReportBtn">
+<button
+    type="button"
+    class="btn
+           btn-primary"
+    id="btnSubmit">
 
-                    Ajukan
+    Ajukan
 
-                </button>
+</button>
 
             </div>
 

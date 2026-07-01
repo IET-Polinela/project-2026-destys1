@@ -5,3 +5,13 @@ __pycache__/
 *.pyc
 .env
 db.sqlite3
+
+# Python
+.coverage
+
+# Node.js
+smartcity_citizen_spa_24782004/node_modules/
+
+# Playwright
+smartcity_citizen_spa_24782004/playwright-report/
+smartcity_citizen_spa_24782004/test-results/

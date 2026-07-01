@@ -195,7 +195,8 @@ class ReportLiveSearchView(View):
         )[:20]
 
         return JsonResponse({
-            'reports': data
+            'reports': data,
+            'results': data,
         })
 
 

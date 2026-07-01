@@ -23,7 +23,7 @@
 
 <div class="row mb-3">
     <div class="col-md-6">
-        <input type="text" id="liveSearchInput" class="form-control" placeholder="Cari judul, kategori, lokasi, atau status...">
+        <input type="text" id="searchInput" class="form-control" placeholder="Cari judul, kategori, lokasi, atau status...">
     </div>
 </div>
 
@@ -112,7 +112,7 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    const searchInput = document.getElementById('liveSearchInput');
+    const searchInput = document.getElementById('searchInput');
     const tableBody = document.getElementById('reportTableBody');
     const modalElement = document.getElementById('reportDetailModal');
     const modalContent = document.getElementById('reportDetailContent');
