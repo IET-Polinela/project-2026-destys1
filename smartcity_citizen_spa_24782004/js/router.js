@@ -477,6 +477,7 @@ const routes = {
             id="inputDescription"
             class="form-control"
             rows="4"
+            placeholder="Masukkan deskripsi laporan"
             required></textarea>
 
     </div>
@@ -491,6 +492,7 @@ const routes = {
             type="text"
             id="inputLocation"
             class="form-control"
+            placeholder="Masukkan lokasi kejadian"
             required>
 
     </div>

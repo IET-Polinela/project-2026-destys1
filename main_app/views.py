@@ -22,12 +22,18 @@ def welcome(request):
 class AdminRequiredMixin:
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
-            messages.error(request, "Silakan login terlebih dahulu.")
+            messages.error(
+                request,
+                "Silakan login terlebih dahulu."
+            )
             return redirect('login')
 
         if not request.user.is_admin:
-            messages.error(request, "Akses Ditolak: hanya admin yang dapat mengakses fitur ini.")
-            return redirect('report_list')
+            messages.error(
+                request,
+                "Akses Ditolak: hanya admin yang dapat mengakses fitur ini."
+            )
+            return redirect('home')
 
         return super().dispatch(request, *args, **kwargs)
 

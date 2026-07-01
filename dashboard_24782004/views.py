@@ -24,7 +24,7 @@ class DashboardView(TemplateView):
                 request,
                 "Akses Ditolak: hanya admin yang dapat mengakses dashboard."
             )
-            return redirect('report_list')
+            return redirect('home')
 
         return super().dispatch(
             request,

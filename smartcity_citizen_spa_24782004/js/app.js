@@ -659,22 +659,22 @@ async function editDraft(
             await response.json();
 
         document.getElementById(
-            'title'
+            'inputTitle'
         ).value =
             report.title;
 
         document.getElementById(
-            'category'
+            'inputCategory'
         ).value =
             report.category;
 
         document.getElementById(
-            'description'
+            'inputDescription'
         ).value =
             report.description;
 
         document.getElementById(
-            'location'
+            'inputLocation'
         ).value =
             report.location;
 
