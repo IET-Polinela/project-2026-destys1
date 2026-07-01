@@ -30,7 +30,7 @@ urlpatterns = [
     path(
         'api/register/',
         RegisterView.as_view(),
-        name='register'
+        name='api_register'
     ),
 
     path(
