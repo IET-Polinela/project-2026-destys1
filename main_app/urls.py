@@ -38,4 +38,5 @@ urlpatterns = [
     # LAB 7
     path('reports/search/', ReportLiveSearchView.as_view(), name='report_live_search'),
     path('report-search/', ReportLiveSearchView.as_view(), name='report_search'),
+    path('reports/detail-json/<int:pk>/', ReportDetailJsonView.as_view(), name='report_detail_json'),
 ]
